@@ -8,7 +8,6 @@ load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 PREFIX = os.getenv("BOT_PREFIX", "/")
 
-# Configuration des intents
 intents = discord.Intents.default()
 intents.messages = True
 intents.message_content = True
@@ -28,7 +27,6 @@ async def on_ready():
     )
     print("Bot is ready!")
 
-# Charger les extensions
 async def load_extensions():
     initial_extensions = ["cogs.general", "cogs.administration", "cogs.steganographie"]
     for extension in initial_extensions:

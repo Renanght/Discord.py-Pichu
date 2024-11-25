@@ -14,7 +14,6 @@ class Steganographie(commands.Cog):
         self.bot = bot
 
     async def fetch_image(self, ctx, link=None):
-        """Télécharge une image depuis un lien ou une pièce jointe."""
         if link:
             response = requests.get(link)
             if response.status_code == 200:
@@ -30,7 +29,6 @@ class Steganographie(commands.Cog):
         return None
 
     def extract_exif(self, image_path):
-        """Extrait les métadonnées EXIF."""
         try:
             image = Image.open(image_path)
             exif_data = image._getexif()
@@ -41,7 +39,6 @@ class Steganographie(commands.Cog):
             return str(e)
 
     def extract_other_metadata(self, image_path):
-        """Extrait d'autres métadonnées comme IPTC."""
         try:
             with open(image_path, "rb") as file:
                 tags = exifread.process_file(file)
@@ -50,7 +47,6 @@ class Steganographie(commands.Cog):
             return str(e)
 
     def extract_xmp(self, image_path):
-        """Extrait les métadonnées XMP."""
         try:
             with open(image_path, "rb") as file:
                 data = file.read()
@@ -70,7 +66,6 @@ class Steganographie(commands.Cog):
 
     @commands.command()
     async def exif(self, ctx, link=None):
-        """Commande pour extraire les données EXIF d'une image."""
         image_path = await self.fetch_image(ctx, link)
         if not image_path:
             await ctx.send("Aucune image trouvée. Fournis un lien ou une pièce jointe.")
@@ -87,7 +82,6 @@ class Steganographie(commands.Cog):
 
     @commands.command()
     async def iptc(self, ctx, link=None):
-        """Commande pour extraire les données IPTC d'une image."""
         image_path = await self.fetch_image(ctx, link)
         if not image_path:
             await ctx.send("Aucune image trouvée. Fournis un lien ou une pièce jointe.")
@@ -104,7 +98,6 @@ class Steganographie(commands.Cog):
 
     @commands.command()
     async def xmp(self, ctx, link=None):
-        """Commande pour extraire les données XMP d'une image."""
         image_path = await self.fetch_image(ctx, link)
         if not image_path:
             await ctx.send("Aucune image trouvée. Fournis un lien ou une pièce jointe.")
@@ -121,7 +114,6 @@ class Steganographie(commands.Cog):
 
     @commands.command()
     async def rmexif(self, ctx, link=None):
-        """Supprime les métadonnées EXIF d'une image et renvoie l'image nettoyée."""
         image_path = await self.fetch_image(ctx, link)
         if not image_path:
             await ctx.send("Aucune image trouvée. Fournis un lien ou une pièce jointe.")
@@ -130,17 +122,14 @@ class Steganographie(commands.Cog):
         try:
             image = Image.open(image_path)
 
-            # Supprime les métadonnées en recréant l'image
             data = list(image.getdata())
             new_image = Image.new(image.mode, image.size)
             new_image.putdata(data)
 
-            # Sauvegarde dans un buffer pour l'envoi
             buffer = BytesIO()
             new_image.save(buffer, format="JPEG")
             buffer.seek(0)
 
-            # Envoi de l'image nettoyée
             file = discord.File(buffer, filename="image_sans_exif.jpg")
             await ctx.send("Voici l'image sans métadonnées EXIF :", file=file)
 
@@ -151,6 +140,5 @@ class Steganographie(commands.Cog):
             os.remove(image_path)
 
 
-# Ajout du cog au bot
 async def setup(bot):
     await bot.add_cog(Steganographie(bot))
