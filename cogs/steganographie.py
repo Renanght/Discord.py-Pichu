@@ -64,7 +64,7 @@ class Steganographie(commands.Cog):
         except Exception as e:
             return str(e)
 
-    @commands.command()
+    @commands.command(name="exif", help="List all exif informations")
     async def exif(self, ctx, link=None):
         image_path = await self.fetch_image(ctx, link)
         if not image_path:
@@ -80,7 +80,7 @@ class Steganographie(commands.Cog):
 
         os.remove(image_path)
 
-    @commands.command()
+    @commands.command(name="iptc", help="List all iptc informations")
     async def iptc(self, ctx, link=None):
         image_path = await self.fetch_image(ctx, link)
         if not image_path:
@@ -96,7 +96,7 @@ class Steganographie(commands.Cog):
 
         os.remove(image_path)
 
-    @commands.command()
+    @commands.command(name="xmp", help="List all xmp informations")
     async def xmp(self, ctx, link=None):
         image_path = await self.fetch_image(ctx, link)
         if not image_path:
@@ -112,7 +112,7 @@ class Steganographie(commands.Cog):
 
         os.remove(image_path)
 
-    @commands.command()
+    @commands.command(name="rmexif", help="Remove all Metadata of an image")
     async def rmexif(self, ctx, link=None):
         image_path = await self.fetch_image(ctx, link)
         if not image_path:
