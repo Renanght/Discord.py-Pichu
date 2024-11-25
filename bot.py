@@ -30,7 +30,7 @@ async def on_ready():
 
 # Charger les extensions
 async def load_extensions():
-    initial_extensions = ["cogs.general", "cogs.administration"]
+    initial_extensions = ["cogs.general", "cogs.administration", "cogs.steganographie"]
     for extension in initial_extensions:
         try:
             await bot.load_extension(extension)
